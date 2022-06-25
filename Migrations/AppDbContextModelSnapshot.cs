@@ -73,6 +73,65 @@ namespace CommanderGQL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CommanderGQL.Models.CommandHasFlag", b =>
+                {
+                    b.Property<int>("CommandId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FlagId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CommandId", "FlagId");
+
+                    b.HasIndex("FlagId");
+
+                    b.ToTable("CommandHasFlag");
+
+                    b.HasData(
+                        new
+                        {
+                            CommandId = 1,
+                            FlagId = 1
+                        },
+                        new
+                        {
+                            CommandId = 1,
+                            FlagId = 2
+                        },
+                        new
+                        {
+                            CommandId = 2,
+                            FlagId = 1
+                        });
+                });
+
+            modelBuilder.Entity("CommanderGQL.Models.Flag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Flag");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Text = "--help"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Text = "--detach"
+                        });
+                });
+
             modelBuilder.Entity("CommanderGQL.Models.Platform", b =>
                 {
                     b.Property<int>("Id")
@@ -120,6 +179,35 @@ namespace CommanderGQL.Migrations
                         .IsRequired();
 
                     b.Navigation("Platform");
+                });
+
+            modelBuilder.Entity("CommanderGQL.Models.CommandHasFlag", b =>
+                {
+                    b.HasOne("CommanderGQL.Models.Command", "Command")
+                        .WithMany("CommandHasFlags")
+                        .HasForeignKey("CommandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CommanderGQL.Models.Flag", "Flag")
+                        .WithMany("CommandHasFlags")
+                        .HasForeignKey("FlagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Command");
+
+                    b.Navigation("Flag");
+                });
+
+            modelBuilder.Entity("CommanderGQL.Models.Command", b =>
+                {
+                    b.Navigation("CommandHasFlags");
+                });
+
+            modelBuilder.Entity("CommanderGQL.Models.Flag", b =>
+                {
+                    b.Navigation("CommandHasFlags");
                 });
 
             modelBuilder.Entity("CommanderGQL.Models.Platform", b =>

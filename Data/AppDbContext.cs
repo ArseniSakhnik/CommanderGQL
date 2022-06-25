@@ -15,6 +15,8 @@ namespace CommanderGQL.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<CommandHasFlag>().HasKey(x => new {x.CommandId, x.FlagId});
+
             builder.Entity<Platform>().HasData(new List<Platform>
             {
                 new()
@@ -66,6 +68,39 @@ namespace CommanderGQL.Data
                     HowTo = "Stop docker compose file",
                     CommandLine = "docker-compose stop",
                     PlatformId = 2,
+                }
+            });
+
+            builder.Entity<Flag>().HasData(new List<Flag>
+            {
+                new()
+                {
+                    Id = 1,
+                    Text = "--help",
+                },
+                new()
+                {
+                    Id = 2,
+                    Text = "--detach"
+                }
+            });
+
+            builder.Entity<CommandHasFlag>().HasData(new List<CommandHasFlag>
+            {
+                new()
+                {
+                    CommandId = 1,
+                    FlagId = 1,
+                },
+                new()
+                {
+                    CommandId = 1,
+                    FlagId = 2,
+                },
+                new()
+                {
+                    CommandId = 2,
+                    FlagId = 1
                 }
             });
 

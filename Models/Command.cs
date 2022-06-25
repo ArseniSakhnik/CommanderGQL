@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CommanderGQL.Models
 {
@@ -16,5 +17,7 @@ namespace CommanderGQL.Models
         [Required]
         public int PlatformId { get; set; }
         public Platform Platform { get; set; }
+        
+        public ICollection<CommandHasFlag> CommandHasFlags { get; set; }
     }
 }
