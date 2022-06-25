@@ -11,6 +11,7 @@ namespace CommanderGQL.Data
         }
 
         public DbSet<Platform> Platforms { get; set; }
+        public DbSet<Command> Commands { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,6 +35,38 @@ namespace CommanderGQL.Data
                     Name = "Windows",
                     LicenseKey = "42342"
                 },
+            });
+
+            builder.Entity<Command>().HasData(new List<Command>
+            {
+                new()
+                {
+                    Id = 1,
+                    HowTo = "Build a project",
+                    CommandLine = "dotnet build",
+                    PlatformId = 1
+                },
+                new()
+                {
+                    Id = 2,
+                    HowTo = "Run a project",
+                    CommandLine = "dotnet run",
+                    PlatformId = 2
+                },
+                new()
+                {
+                    Id = 3,
+                    HowTo = "Start a docker compose file",
+                    CommandLine = "docker compose up -d",
+                    PlatformId = 2
+                },
+                new()
+                {
+                    Id = 4,
+                    HowTo = "Stop docker compose file",
+                    CommandLine = "docker-compose stop",
+                    PlatformId = 2,
+                }
             });
 
             base.OnModelCreating(builder);
