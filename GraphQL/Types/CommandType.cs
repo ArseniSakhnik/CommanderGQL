@@ -25,12 +25,13 @@ namespace CommanderGQL.GraphQL.Types
                 .UseDbContext<AppDbContext>()
                 .Description("yes i am");
         }
-        
-        private class Resolvers 
+
+        private class Resolvers
         {
             public async Task<Platform> GetPlatform(Command command, [ScopedService] AppDbContext context)
             {
-                return await context.Platforms.FirstOrDefaultAsync(p => p.Id == command.Id);
+                var response = await context.Platforms.FirstOrDefaultAsync(p => p.Id == command.PlatformId);
+                return response;
             }
 
             public IQueryable<Flag> GetFlags(Command command, [ScopedService] AppDbContext context)
