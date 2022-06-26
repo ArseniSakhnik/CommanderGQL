@@ -12,6 +12,7 @@ namespace CommanderGQL.Data
 
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Command> Commands { get; set; }
+        public DbSet<Flag> Flags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

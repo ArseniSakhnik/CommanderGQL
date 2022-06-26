@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommanderGQL.Data;
 using CommanderGQL.GraphQL;
+using CommanderGQL.GraphQL.Types;
 using GraphQL.Server.Ui.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,15 +31,13 @@ namespace CommanderGQL
         {
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            services.AddPooledDbContextFactory<AppDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-            });
+            services.AddPooledDbContextFactory<AppDbContext>(options => { options.UseNpgsql(connectionString); });
 
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddProjections();
+                .AddType<PlatformType>()
+                .AddType<CommandType>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,10 +50,7 @@ namespace CommanderGQL
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGraphQL();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapGraphQL(); });
 
             app.UseGraphQLVoyager(new GraphQLVoyagerOptions
             {
